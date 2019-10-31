@@ -100,22 +100,25 @@ for k in dictVector:
     print(dictVector[k])
 '''
 
-metode = print("Masukkan pilihan netode (1.Cos Similarity 2.Euclidan Distance)")
+print("Pilihan metode\n1.Cos Similarity\n2.Euclidan Distance")
+metode = int(input("Masukkan input : "))
+
 
 resultComparison = []
-
 if (metode==1):
     for key in result:
         hasil = CosSimilarity(result[key],vectorTarget)
         resultComparison.append((hasil,key))
-else if (metode==2):
+    resultComparison.sort(reverse = True);
+elif(metode==2):
     for key in result:
         hasil = dist(result[key],vectorTarget)
         resultComparison.append((hasil,key))
+    resultComparison.sort();
     
 show_img(imageTarget)    
 
-resultComparison.sort();
+
 print(len(resultComparison))
 for i in range(10):
     print(resultComparison[i][0]);
