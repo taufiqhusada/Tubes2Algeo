@@ -40,22 +40,19 @@ def extract_features(image_path, vector_size=32):
     
     return dsc
 
-dictNama = [0 for i in range(100005)]
-dictVector = {}
+result = {}
 
 
 def batch_extractor(images_path):
     folders = [os.path.join(images_path, p) for p in sorted(os.listdir(images_path))]
 
-    result = {}
     i = 0
     for f in folders:
-            print ('Extracting features from image %s' % f)
-            dictNama[i] = f
-            dictVector[i] = extract_features(f)
-            i+=1
+        print ('Extracting features from image %s' % f)
+        name = f.split('/')[-1]
+        #print(name)
+        result[name] = extract_features(f)
 
-  
     
 def show_img(path):
     img = imread(path)
@@ -89,11 +86,13 @@ def CosSimilarity(vec1,vec2):
     
     return dotProduct/(skalarVec1*skalarVec2)
 
-imagesToCompare = 'PINS/pins_Jon Bernthal'
-batch_extractor(imagesToCompare)
+
+pathFolder = 'D:/download/pins-face-recognition/PINS/PINS/'
+
+batch_extractor('D:/download/pins-face-recognition/PINS/PINS/pins_Jon Bernthal')
 
 
-imageTarget = 'PINS/pins_Jon Bernthal/Jon Bernthal0_2150.jpg'
+imageTarget = 'D:/download/pins-face-recognition/PINS/PINS/pins_Jon Bernthal/Jon Bernthal0_2150.jpg'
 vectorTarget = extract_features(imageTarget)
 
 '''
@@ -101,16 +100,25 @@ for k in dictVector:
     print(dictVector[k])
 '''
 
+metode = print("Masukkan pilihan netode (1.Cos Similarity 2.Euclidan Distance)")
+
 resultComparison = []
 
-for i in range(len(dictVector)):
-    hasil = dist(arrayVector[i],vectorTarget)
-    resultComparison.append((hasil,i))
+if (metode==1):
+    for key in result:
+        hasil = CosSimilarity(result[key],vectorTarget)
+        resultComparison.append((hasil,key))
+else if (metode==2):
+    for key in result:
+        hasil = dist(result[key],vectorTarget)
+        resultComparison.append((hasil,key))
     
 show_img(imageTarget)    
 
 resultComparison.sort();
+print(len(resultComparison))
 for i in range(10):
     print(resultComparison[i][0]);
-    show_img(dictNama[resultComparison[i][1]])
+    print(resultComparison[i][1]);
+    show_img(os.path.join(pathFolder,resultComparison[i][1] ));
     
