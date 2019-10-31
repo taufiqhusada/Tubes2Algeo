@@ -87,12 +87,13 @@ def CosSimilarity(vec1,vec2):
     return dotProduct/(skalarVec1*skalarVec2)
 
 
-pathFolder = 'D:/download/pins-face-recognition/PINS/PINS/'
 
-batch_extractor('D:/download/pins-face-recognition/PINS/PINS/pins_Jon Bernthal')
+pathFolder = input("Masukkan directory yang lengkap:")
+
+batch_extractor(pathFolder+'/pins_Jon Bernthal')
 
 
-imageTarget = 'D:/download/pins-face-recognition/PINS/PINS/pins_Jon Bernthal/Jon Bernthal0_2150.jpg'
+imageTarget = pathFolder+'/pins_Jon Bernthal/Jon Bernthal0_2150.jpg'
 vectorTarget = extract_features(imageTarget)
 
 '''
