@@ -1,2 +1,4 @@
-# Ignore folder named PINS
+# Ignore folders named below
 PINS/
+Reference/
+Test/
