@@ -11,7 +11,7 @@ import math
 import matplotlib.pyplot as plt
 import csv
 
-result = {}
+
 
 # Feature extractor
 def extract_features(image_path, vector_size=32):
@@ -45,7 +45,7 @@ def extract_features(image_path, vector_size=32):
     return dsc
 
 
-
+result = {}
 
 def batch_extractor(images_path):
     folders = [os.path.join(images_path, p) for p in sorted(os.listdir(images_path))]
@@ -121,12 +121,12 @@ def readFromCsv():
 
 pathFolder = input("Masukkan directory yang lengkap:")
 
-batch_extractor(pathFolder+'Reference')
+batch_extractor(pathFolder+'\\Reference')
 saveToCsv();
 
 imageTargetName = input("Masukkan nama file image yang ingin dicompare")
 
-imageTarget = pathFolder+'Test'+imageTargetName
+imageTarget = pathFolder+'\\Test\\'+imageTargetName
 vectorTarget = extract_features(imageTarget)
 
 
@@ -135,7 +135,6 @@ readFromCsv();
 print("Pilihan metode\n1.Cos Similarity\n2.Euclidan Distance")
 metode = int(input("Masukkan input : "))
 
-print(result)
 resultComparison = []
 if (metode==1):
     for key in result:
