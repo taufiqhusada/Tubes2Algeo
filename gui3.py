@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'MainWindowAdvanced.ui'
+# Form implementation generated from reading ui file 'C:\Users\Brent\Desktop\MainWindowAdvanced.ui'
 #
-# Created by: PyQt5 UI code generator 5.9.2
+# Created by: PyQt5 UI code generator 5.11.2
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -48,17 +49,18 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
         self.selectImageBtn.clicked.connect(self.setImage)
-        # self.addBtn.clicked.connect(self.addItem)
+        self.addBtn.clicked.connect(self.addItem)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("Face Recognition", "Face Recognition"))
-        self.selectImageBtn.setText(_translate("Face Recognition", "Select Image"))
-        self.addBtn.setText(_translate("Face Recognition", "Add"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        self.selectImageBtn.setText(_translate("MainWindow", "Select Image"))
+        self.addBtn.setText(_translate("MainWindow", "Add"))
 
     def setImage(self):
-        fileName, _ = QtWidgets.QFileDialog.getOpenFileName(None, "Select Image", "", "Image Files (*.png *.jpg *jpeg *.bmp)") # Ask for file
+        fileName, _ = QtWidgets.QFileDialog.getOpenFileName(None, "Select Image", "", "Image Files (*.png *.jpg *jpeg *.bmp);;All Files (*)") # Ask for file
         if fileName: # If the user gives a file
             pixmap = QtGui.QPixmap(fileName) # Setup pixmap with the provided image
             pixmap = pixmap.scaled(self.imageLbl.width(), self.imageLbl.height(), QtCore.Qt.KeepAspectRatio) # Scale pixmap
@@ -73,9 +75,11 @@ class Ui_MainWindow(object):
 
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
+

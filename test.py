@@ -4,6 +4,9 @@ import sys
 
 from PyQt5.QtGui import QPixmap
 
+
+
+
 class Window(QWidget):
     def __init__(self):
         super().__init__()
@@ -12,7 +15,7 @@ class Window(QWidget):
         self.left = 500
         self.width = 400
         self.height = 300
-        self.InitWindowr()
+        self.InitWindow()
 
     def InitWindow(self):
         self.setWindowIcon(QtGui.QIcon("icon.png"))
