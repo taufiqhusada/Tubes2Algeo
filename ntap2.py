@@ -84,8 +84,12 @@ class Ui_MainWindow(object):
         self.ImageBtn.clicked.connect(self.setImage)
         self.PathBtn.clicked.connect(self.setPath)
         self.FindBtn.clicked.connect(self.findSimiliar)
+        self.NextBtn.clicked.connect(self.nextPhoto)
+        self.PrevBtn.clicked.connect(self.prevPhoto)
         self.option = str(self.comboBox.currentText())
         print(self.comboBox.currentText())
+
+        self.indeks = 0
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -114,6 +118,7 @@ class Ui_MainWindow(object):
         print(self.fileName)
 
     pathDir = '/'
+    refDir = '/'
 
     def setPath(self):
         print("path set")
@@ -121,7 +126,29 @@ class Ui_MainWindow(object):
         dialog = QtWidgets.QFileDialog()
         dialog.setFileMode( QtWidgets.QFileDialog.FileMode() )
         self.pathDir = dialog.getExistingDirectory( None, 'Open working directory', startingDir )
+        self.refDir = self.pathDir + "//Reference//"
         print(self.pathDir)
+
+    resultComparison = []
+    
+
+    def nextPhoto(self):
+        self.indeks+=1  
+        print(self.resultComparison[self.indeks][0]);
+        print(os.path.join(self.refDir,self.resultComparison[self.indeks][1]));
+        pixmap = QtGui.QPixmap(os.path.join(self.refDir,self.resultComparison[self.indeks][1])) # Setup pixmap with the provided image
+        pixmap = pixmap.scaled(self.imageRes.width(), self.imageRes.height(), QtCore.Qt.KeepAspectRatio) # Scale pixmap
+        self.imageRes.setPixmap(pixmap) # Set the pixmap onto the label
+        self.imageRes.setAlignment(QtCore.Qt.AlignCenter)
+
+    def prevPhoto(self):
+        self.indeks-=1
+        print(self.resultComparison[self.indeks][0]);
+        print(os.path.join(self.refDir,self.resultComparison[self.indeks][1]));
+        pixmap = QtGui.QPixmap(os.path.join(self.refDir,self.resultComparison[self.indeks][1])) # Setup pixmap with the provided image
+        pixmap = pixmap.scaled(self.imageRes.width(), self.imageRes.height(), QtCore.Qt.KeepAspectRatio) # Scale pixmap
+        self.imageRes.setPixmap(pixmap) # Set the pixmap onto the label
+        self.imageRes.setAlignment(QtCore.Qt.AlignCenter)
 
     def extract_features(self, image_path, vector_size=32):
         image = imread(image_path)
@@ -191,7 +218,7 @@ class Ui_MainWindow(object):
             self.result[name] = self.extract_features(f)
 
     def readFromCsv(self):
-        with open('result_file.csv', mode='r') as result_file:
+        with open('Reference/result_file.csv', mode='r') as result_file:
             csv_reader = csv.reader(result_file, delimiter=',')
             line_count = 0
             #result = {}
@@ -241,31 +268,29 @@ class Ui_MainWindow(object):
             metode = 2;
         else:
             metode = 1;
-        resultComparison = []
         if (metode==1):
             for key in self.result:
                 hasil = self.CosSimilarity(self.result[key],vectorTarget)
-                resultComparison.append((hasil,key))
-            resultComparison.sort(reverse = True);
+                self.resultComparison.append((hasil,key))
+            self.resultComparison.sort(reverse = True);
         elif(metode==2):
             for key in self.result:
                 hasil = self.dist(self.result[key],vectorTarget)
-                resultComparison.append((hasil,key))
-            resultComparison.sort();
+                self.resultComparison.append((hasil,key))
+            self.resultComparison.sort();
 
         #self.show_img(imageTargetName)
-        refDir = self.pathDir + '\\Reference\\'
-        print(len(resultComparison))
-        for i in range(10):
-            print(resultComparison[i][0]);
-            print(os.path.join(refDir,resultComparison[i][1]));
-            pixmap = QtGui.QPixmap(os.path.join(refDir,resultComparison[i][1])) # Setup pixmap with the provided image
-            pixmap = pixmap.scaled(self.imageRes.width(), self.imageRes.height(), QtCore.Qt.KeepAspectRatio) # Scale pixmap
-            self.imageRes.setPixmap(pixmap) # Set the pixmap onto the label
-            self.imageRes.setAlignment(QtCore.Qt.AlignCenter)
-            break
-            #self.show_img(os.path.join(refDir,resultComparison[i][1]));
+    
+        print(len(self.resultComparison))
 
+        print(self.resultComparison[self.indeks][0]);
+        print(os.path.join(self.refDir,self.resultComparison[self.indeks][1]));
+        pixmap = QtGui.QPixmap(os.path.join(self.refDir,self.resultComparison[self.indeks][1])) # Setup pixmap with the provided image
+        pixmap = pixmap.scaled(self.imageRes.width(), self.imageRes.height(), QtCore.Qt.KeepAspectRatio) # Scale pixmap
+        self.imageRes.setPixmap(pixmap) # Set the pixmap onto the label
+        self.imageRes.setAlignment(QtCore.Qt.AlignCenter)
+            #self.show_img(os.path.join(refDir,resultComparison[i][1]));
+        
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
