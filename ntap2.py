@@ -71,7 +71,8 @@ class Ui_MainWindow(object):
         self.comboBox = QtWidgets.QComboBox(self.centralwidget)
         self.comboBox.setGeometry(QtCore.QRect(310, 230, 151, 21))
         self.comboBox.setObjectName("comboBox")
-        self.comboBox.addItems(['Distance Method', 'Cosine Method'])
+        self.comboBox.addItem('Distance Method')
+        self.comboBox.addItem('Cosine Method')
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 481, 23))
@@ -86,8 +87,7 @@ class Ui_MainWindow(object):
         self.FindBtn.clicked.connect(self.findSimiliar)
         self.NextBtn.clicked.connect(self.nextPhoto)
         self.PrevBtn.clicked.connect(self.prevPhoto)
-        self.option = str(self.comboBox.currentText())
-        print(self.comboBox.currentText())
+        
 
         self.indeks = 0
 
@@ -189,7 +189,6 @@ class Ui_MainWindow(object):
 
     # fungsi cosine similarity
     def CosSimilarity(self, vec1,vec2):
-        result = 0.0;
         dotProduct = 0.0;
 
         for i in range(len(vec1)):
@@ -248,7 +247,11 @@ class Ui_MainWindow(object):
         plt.imshow(img)
         plt.show()
 
+    option = ""
+
     def findSimiliar(self):
+        self.option = str(self.comboBox.currentText())
+        print(self.comboBox.currentText())
         print("process")
         pathFolder = self.pathDir
         print(pathFolder)
@@ -261,9 +264,8 @@ class Ui_MainWindow(object):
 
 
         self.readFromCsv();
+        print(self.option)
 
-        print("---Pilihan metode---\n1.Cos Similarity\n2.Euclidan Distance")
-        #metode = int(input("Masukkan input : "))
         if (str(self.option)=="Distance Method"):
             metode = 2;
         else:
