@@ -71,8 +71,7 @@ class Ui_MainWindow(object):
         self.comboBox = QtWidgets.QComboBox(self.centralwidget)
         self.comboBox.setGeometry(QtCore.QRect(310, 230, 151, 21))
         self.comboBox.setObjectName("comboBox")
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
+        self.comboBox.addItems(['Distance Method', 'Cosine Method'])
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 481, 23))
@@ -85,6 +84,8 @@ class Ui_MainWindow(object):
         self.ImageBtn.clicked.connect(self.setImage)
         self.PathBtn.clicked.connect(self.setPath)
         self.FindBtn.clicked.connect(self.findSimiliar)
+        self.option = str(self.comboBox.currentText())
+        print(self.comboBox.currentText())
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -100,9 +101,9 @@ class Ui_MainWindow(object):
         self.PrevBtn.setText(_translate("MainWindow", "Prev"))
         self.comboBox.setItemText(0, _translate("MainWindow", "Distance Method"))
         self.comboBox.setItemText(1, _translate("MainWindow", "Cosine Method"))
-    
+
     fileName = ""
-    
+
     def setImage(self):
         self.fileName, _ = QtWidgets.QFileDialog.getOpenFileName(None, "Select Image", "", "Image Files (*.png *.jpg *jpeg *.bmp)") # Ask for file
         if self.fileName: # If the user gives a file
@@ -111,9 +112,9 @@ class Ui_MainWindow(object):
             self.imageSrc.setPixmap(pixmap) # Set the pixmap onto the label
             self.imageSrc.setAlignment(QtCore.Qt.AlignCenter) # Align the label to center
         print(self.fileName)
-    
+
     pathDir = '/'
-    
+
     def setPath(self):
         print("path set")
         startingDir = "/"
@@ -204,7 +205,7 @@ class Ui_MainWindow(object):
                 for e in row:
                     temp.append(float(e))
                 self.result[key] = temp;
-    
+
     def saveToCsv(self):
         with open('result_file.csv', mode='w') as result_file:
             result_writer = csv.writer(result_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
@@ -236,7 +237,10 @@ class Ui_MainWindow(object):
 
         print("---Pilihan metode---\n1.Cos Similarity\n2.Euclidan Distance")
         #metode = int(input("Masukkan input : "))
-        metode = 1;
+        if (str(self.option)=="Distance Method"):
+            metode = 2;
+        else:
+            metode = 1;
         resultComparison = []
         if (metode==1):
             for key in self.result:
@@ -250,7 +254,7 @@ class Ui_MainWindow(object):
             resultComparison.sort();
 
         #self.show_img(imageTargetName)
-        refDir = self.pathDir + '\\Reference\\' 
+        refDir = self.pathDir + '\\Reference\\'
         print(len(resultComparison))
         for i in range(10):
             print(resultComparison[i][0]);
@@ -258,7 +262,7 @@ class Ui_MainWindow(object):
             pixmap = QtGui.QPixmap(os.path.join(refDir,resultComparison[i][1])) # Setup pixmap with the provided image
             pixmap = pixmap.scaled(self.imageRes.width(), self.imageRes.height(), QtCore.Qt.KeepAspectRatio) # Scale pixmap
             self.imageRes.setPixmap(pixmap) # Set the pixmap onto the label
-            self.imageRes.setAlignment(QtCore.Qt.AlignCenter) 
+            self.imageRes.setAlignment(QtCore.Qt.AlignCenter)
             break
             #self.show_img(os.path.join(refDir,resultComparison[i][1]));
 
